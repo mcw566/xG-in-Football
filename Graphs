@@ -1,0 +1,52 @@
+install.packages("ggplot2")
+library(ggplot2)
+
+Season = c(rep("20-21",2),rep("21-22",2),rep("22-23",2),rep("23-24",2),rep("24-25",2),rep("25-26",2))
+Type <- rep(c("xG","Actual"),6)
+Goals = c(996,1024,
+          1047.8,1071,
+          1099.5,1084,
+          1196,1246,
+          1096.7,1115,
+          834.7,813)
+ 
+data <- data.frame(Season, Type, Goals)
+ggplot(data, aes(fill=Type, x=Season, y=Goals)) + 
+  geom_bar(stat = "identity", width=0.6, position="dodge")+
+  ggtitle("xG vs Actual Goals by Season")+
+  theme(axis.line = element_line(color = "black", linewidth = 0.8),
+        axis.title = element_text(size = 12))
+
+xG = c(29.4,28.6,16.9,22.7,19.3,19.8,18.2,16.3,21.1,25,22.8,21,20.6,23.4)
+Goals_1 = c(27,36,23,23,23,23,22,22,22,32,29,25,26,31)
+data_2 <- data.frame(xG, Goals_1)
+ggplot(data_2, aes(x = xG, y = Goals_1)) +
+  geom_point(size = 5, colour = "gold", shape = "square") +
+  geom_point(aes(x = 29.4, y = 27), color = "blue", size = 5, shape = "square") +
+  geom_abline(intercept = 0, slope = 1, color = "red", lty = "dashed") +
+  geom_label(label = "Erling Haaland : 23-24", x = 28.9, y = 26.3, size = 3.3, color = "blue") +
+  annotate("text", x = 25, y = 25.35, label = "xG = Goals", color = "red", size = 4, angle = 24.2, hjust = 0) +
+  ggtitle("Golden Boot Winners: xG vs Goals") +
+  labs(x = "Expected Goals (xG)", y = "Goals")+
+  theme(axis.title = element_text(size = 12))
+
+top5_xG = c(93.7,79.5,64,61.8,64.8,75.2,102.2,66.2,76.2,61,77.7,63.2,72.2,68.7,58.8,93.4,93,69.3,68,63.4)
+top5_Goals = c(95,89,63,67,73,85,102,66,69,67,83,73,68,58,68,99,94,76,69,61)
+top5 <- data.frame(x = top5_xG, y = top5_Goals, Key = "Top 5")
+bottom5_xG = c(49.7,37,41.8,42.6,29,49,45.1,44.7,48.6,37.2,53.8,38.1,41,35,33.2,44.5,51.2,41.1,39.3,31.5)
+bottom5_Goals = c(45,35,34,34,22,49,41,40,36,26,40,33,27,35,20,43,42,34,34,23)
+bottom5 <- data.frame(x = bottom5_xG, y = bottom5_Goals, Key = "Bottom 5")
+EPL <- rbind(top5, bottom5)
+
+ggplot(EPL, aes(x = x, y = y, color = Key)) +
+  geom_point(size = 3) +
+  geom_point(aes(x = 49, y = 49), color = "blue", size = 4)+
+  geom_point(aes(x = 35, y= 35), color = "purple", size = 4)+
+  geom_abline(intercept = 0, slope = 1,) +
+  ggtitle("Top 5 vs Bottom 5 Teams: xG vs Goals")+
+  labs(x = "Expected Goals (xG)",y = "Goals")+
+  geom_label(label = "West Ham: 19/20", x = 47, y= 52.5, size = 3, color = "blue")+
+  geom_label(label = "West Brom : 20/21",x = 32, y = 38.5, size = 3, colour = "purple")+
+  theme(axis.title = element_text(size = 12))
+
+
